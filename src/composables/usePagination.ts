@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { ComputedRef } from 'vue'
 
 type PaginationOptions<T> = {
@@ -36,6 +36,12 @@ export function usePagination<T>({ items = computed(() => ([])), pageSize = 5 }:
     const toIndex = clamp((currentPage.value * size.value), 0, totalItems.value)
     return items.value.slice(fromIndex, toIndex);
   })
+
+  watch(currentItems, () => {
+    if (currentItems.value.length === 0 && currentPage.value > 1) {
+      currentPage.value--
+    }
+  });
 
   return {
     currentPage,

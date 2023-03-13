@@ -7,7 +7,8 @@
         </p>
         <app-button @click='handleCreate'>Create user</app-button>
       </div>
-      <div class='relative overflow-x-auto shadow-md sm:rounded-lg' v-if='users.length'>
+      <input class='rounded shadow-md px-2 my-4 h-12' type='text' v-model='searchTerm' placeholder='Filter by name or surname'>
+      <div class='relative overflow-x-auto shadow-md sm:rounded-lg' v-if='currentItems.length'>
         <table class='w-full text-sm text-left text-gray-500 bg-white'>
           <thead class='text-xs text-gray-700 uppercase'>
           <tr>
@@ -32,7 +33,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr class='bg-white border-b' v-for='(user, index) in currentItems'>
+          <tr class='bg-white border-b' v-for='user in currentItems'>
             <td class='px-6 py-4'>
               {{ user.firstName }}
             </td>
@@ -86,7 +87,7 @@
 <script lang='ts' setup>
 import AppPage from '@/components/AppPage.vue'
 import { useUserStore } from '@/stores/userStore'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import AppButton from '@/components/AppButton.vue'
 import { useRouter } from 'vue-router'
 import { RouteNames, RoutePaths } from '@/router/types'
@@ -95,6 +96,8 @@ import { usePagination } from '@/composables/usePagination'
 const userStore = useUserStore()
 const router = useRouter()
 const users = computed(() => userStore.users)
+const searchTerm = ref("");
+
 
 function handleDelete(id: string) {
   userStore.removeUser(id)
@@ -113,6 +116,13 @@ function handleEdit(id: string) {
   })
 }
 
+const filteredUsers = computed(() => users.value.filter(u =>{
+  if (searchTerm.value) {
+    return u.firstName.toLowerCase().includes(searchTerm.value) || u.surname.toLowerCase().includes(searchTerm.value)
+  }
+  return true;
+}))
+
 const {
   totalPages,
   totalItems,
@@ -123,6 +133,6 @@ const {
   next,
   prev,
   size
-} = usePagination({ items: users, pageSize: 10 })
+} = usePagination({ items: filteredUsers, pageSize: 10 })
 
 </script>

@@ -6,7 +6,6 @@
       :class='{"ring-1 ring-red-500": errorMessage}'
       :id='name'
       type='text'
-      v-model='value'
     >
     <div v-if='errorMessage' class='bg-red-200 p-2 text-red-700 rounded'>{{ errorMessage }}</div>
   </div>
