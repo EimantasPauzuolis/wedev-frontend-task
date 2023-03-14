@@ -8,15 +8,17 @@ export const useListStore = defineStore('listStore', {
     async getCountryList() {
       try {
         if (this.lists.countries.length !== 0) {
-          return;
+          return
         }
 
-        const response = await axios.get<CountryResponse>(ROUTE_GET_ALL_COUNTRIES);
+        const response = await axios.get<CountryResponse>(ROUTE_GET_ALL_COUNTRIES)
 
-        this.lists.countries = response.data.map(c => ({
-          label: c.name.common,
-          value: c.name.common
-        }))
+        this.lists.countries = response.data
+          .map(c => ({
+            label: c.name.common,
+            value: c.name.common
+          }))
+          .sort((a,b) => (a.label > b.label) ? 1 : -1)
 
       } catch (e) {
         console.log(e)

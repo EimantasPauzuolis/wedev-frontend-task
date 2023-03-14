@@ -6,7 +6,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: RoutePaths.UserCreate
+      redirect: RoutePaths.UserList
     },
     {
       path: RoutePaths.UserList,

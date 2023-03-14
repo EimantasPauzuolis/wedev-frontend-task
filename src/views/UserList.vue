@@ -7,7 +7,13 @@
         </p>
         <app-button @click='handleCreate'>Create user</app-button>
       </div>
-      <input class='rounded shadow-md px-2 my-4 h-12' type='text' v-model='searchTerm' placeholder='Filter by name or surname'>
+      <input
+        v-if='users.length'
+        class='rounded shadow-md px-2 my-4 h-12'
+        type='text'
+        v-model='searchTerm'
+        placeholder='Filter by name or surname'
+      >
       <div class='relative overflow-x-auto shadow-md sm:rounded-lg' v-if='currentItems.length'>
         <table class='w-full text-sm text-left text-gray-500 bg-white'>
           <thead class='text-xs text-gray-700 uppercase'>
@@ -96,7 +102,7 @@ import { usePagination } from '@/composables/usePagination'
 const userStore = useUserStore()
 const router = useRouter()
 const users = computed(() => userStore.users)
-const searchTerm = ref("");
+const searchTerm = ref('')
 
 
 function handleDelete(id: string) {
@@ -116,11 +122,11 @@ function handleEdit(id: string) {
   })
 }
 
-const filteredUsers = computed(() => users.value.filter(u =>{
+const filteredUsers = computed(() => users.value.filter(u => {
   if (searchTerm.value) {
     return u.firstName.toLowerCase().includes(searchTerm.value) || u.surname.toLowerCase().includes(searchTerm.value)
   }
-  return true;
+  return true
 }))
 
 const {
