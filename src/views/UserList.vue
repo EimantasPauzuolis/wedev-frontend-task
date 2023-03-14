@@ -39,7 +39,11 @@
           </tr>
           </thead>
           <tbody>
-          <tr class='bg-white border-b' v-for='user in currentItems'>
+          <tr
+            class='bg-white border-b'
+            v-for='user in currentItems'
+            :key='user.id'
+          >
             <td class='px-6 py-4'>
               {{ user.firstName }}
             </td>
@@ -76,6 +80,7 @@
           v-for='page in totalPages'
           @click='currentPage = page'
           :class='{"ring-1 ring-indigo-800": currentPage === page}'
+          :key='page'
         >
           {{ page }}
         </app-button>
@@ -131,14 +136,12 @@ const filteredUsers = computed(() => users.value.filter(u => {
 
 const {
   totalPages,
-  totalItems,
   currentPage,
   isLastPage,
   isFirstPage,
   currentItems,
   next,
-  prev,
-  size
+  prev
 } = usePagination({ items: filteredUsers, pageSize: 10 })
 
 </script>
